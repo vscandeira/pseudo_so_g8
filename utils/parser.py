@@ -1,4 +1,4 @@
-from core.processo import Processo
+from core.processos import Processo
 
 def parse_processos(caminho):
     processos = [] #lista vazia para armazenar os processos
