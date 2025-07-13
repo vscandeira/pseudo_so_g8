@@ -11,3 +11,10 @@ class Processo:
         self.scanner = scanner
         self.modem = modem
         self.sata = sata
+        self.executado = 0
+    
+    def executar_processo(self, autorizacao_cpu):
+        self.executado += 1
+        self.tempo_cpu -= autorizacao_cpu
+        #Debugger
+        print("Executado o processo PID:", self.pid, "Por ", autorizacao_cpu, "ms - Prioridade: ", self.prioridade , " - Tempo restante de CPU:", self.tempo_cpu)

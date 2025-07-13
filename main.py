@@ -12,23 +12,18 @@ if __name__ == "__main__":
         print("Uso: python main.py <processos.txt> <arquivos.txt>")
         sys.exit(1)
 
-    procs_param = sys.argv[1]
-    file_ops_param = sys.argv[2]
-
-    # Verificação inicial, será retirado em release final
-    print("Processos:", procs_param)
-    print("Operações de Arquivos:", file_ops_param)
+    procs_filename = sys.argv[1]
+    ops_arqs_filename = sys.argv[2]
 
     # Parseia os processos e arquivos
-    procs = parse_processos(procs_param)
-    file_ops = parse_arquivos(file_ops_param)
+    procs = parse_processos(procs_filename)
+    ops_arqs = parse_arquivos(ops_arqs_filename)
 
     # Verificação inicial, será retirado em release final
-    print("Processos:", procs)
-    print("Operações de Arquivos:", file_ops)
+    print("Operações de Arquivos:", ops_arqs)
+    print()
 
     # Instancia o despachante
-    # Despachante(processos, operacoes_arquivos).executar()
-    #so = SistemaOperacional(processos, operacoes_arquivos)
-    #so.executar()
+    so = SistemaOperacional(procs, ops_arqs)
+    so.executar()
 
