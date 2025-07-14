@@ -10,29 +10,27 @@ class GerenciadorRecursos:
         self.modem = -1
         self.sata = [-1, -1]
 
-    def _alocar(self, recurso: str, processo_pid: int) -> tuple[bool, str]:
+    def _alocar(self, recurso: str, processo: Processo) -> tuple[bool, str]:
         """
         Tenta alocar um recurso específico.
         Retorna True e o nome do recurso alocado se bem-sucedido, False caso contrário.
         """
         if recurso == "scanner":
             if self.scanner == -1:
-                self.scanner = processo_pid
+                self.scanner = processo.pid
                 return True, "scanner"
         elif recurso == "modem":
             if self.modem == -1:
-                self.modem = processo_pid
+                self.modem = processo.pid
                 return True, "modem"
         elif recurso == "impressora":
-            for i, estado in enumerate(self.impressoras):
-                if estado == -1:
-                    self.impressoras[i] = processo_pid
-                    return True, f"impressora_{i}"
+            if self.impressoras[processo.impressora]:
+                self.impressoras[processo.impressora] = processo.pid
+                return True, f"impressora_{processo.impressora}"
         elif recurso == "sata":
-            for i, estado in enumerate(self.sata):
-                if estado == -1:
-                    self.sata[i] = processo_pid
-                    return True, f"sata_{i}"
+            if self.sata[processo.sata]:
+                self.sata[processo.sata] = processo.pid
+                return True, f"sata_{processo.sata}"
         return False, None
 
     def alocar(self, processo: Processo) -> bool:
@@ -55,7 +53,7 @@ class GerenciadorRecursos:
         alocacoes = {}
 
         for recurso in recursos_solicitados:
-            sucesso, identificador = self._alocar(recurso, processo.pid)
+            sucesso, identificador = self._alocar(recurso, processo)
             if sucesso:
                 alocacoes[recurso] = identificador
             else:
@@ -91,14 +89,12 @@ class GerenciadorRecursos:
         if processo.scanner:
             if self.scanner == processo.pid:
                 self.scanner = -1
-        if processo.impressora:
-            for idx, _ in enumerate(self.impressoras):
-                if self.impressoras[idx] == processo.pid:
-                    self.impressoras[idx] = -1
+        if processo.impressora is not None:
+            if self.impressoras[processo.impressora] == processo.pid:
+                self.impressoras[processo.impressora] = -1
         if processo.modem:
             if self.modem == processo.pid:
                 self.modem = -1
-        if processo.sata:
-            for idx, _ in enumerate(self.sata):
-                if self.sata[idx] == processo.pid:
-                    self.sata[idx] = -1
+        if processo.sata is not None:
+            if self.sata[processo.sata] == processo.pid:
+                self.sata[processo.sata] = -1
