@@ -31,8 +31,6 @@ Este projeto tem como objetivo simular um sistema operacional simplificado (pseu
 pseudo_so/
 │
 ├── main.py                    # Arquivo principal (despachante)
-├── processos.txt              # Arquivo de entrada com dados dos processos
-├── arquivos.txt               # Arquivo de entrada com operações no sistema de arquivos
 │
 ├── core/                      # Lógica principal do sistema
 │   ├── processo.py            # Classe Processo
@@ -52,6 +50,10 @@ pseudo_so/
 │   ├── test_recursos.py
 │   ├── test_arquivos.py
 │   └── test_integracao.py
+│
+├── validation_files/
+│   └── process*.txt              # Arquivos de entrada com dados dos processos
+│   └── files*.txt               # Arquivo de entrada com operações no sistema de arquivos
 │
 ├── read_me.md                 # Este arquivo
 └── relatorio.pdf              # Documento explicando o desenvolvimento do projeto
@@ -74,27 +76,29 @@ pseudo_so/
    cd pseudo_so/
    ```
 
-2. Verifique se os arquivos de entrada `processos.txt` e `arquivos.txt` estão corretamente formatados e na raiz do projeto.
+2. Escolher um arquivo de processos e um de files para teste. Os arquivos estão no diretório `validation_files`. É possível criar os próprios arquivos seguindo o formato da especificação do requisito do trabalho da disciplina.
 
-3. Execute o programa:
-   ```bash
-   python3 main.py processos.txt arquivos.txt
-   ```
+3. Execute o programa. 
+   + O primeiro parâmetro é o arquivo de processos e o segundo o arquivo contendo operações sobre arquivos.
+   + Exemplo com escolha dos arquivos **process02.txt** e **files01.txt**:
+      ```bash
+      python3 main.py validation_files/process02.txt validation_files/files01.txt
+      ```
 
-4. A saída será impressa no terminal, com logs de criação, execução e finalização dos processos, além das operações no sistema de arquivos.
+4. A saída será impressa no terminal, com logs de criação, execução e finalização dos processos, além das operações no sistema de arquivos, estados de memória e do gerenciador de recursos.
 
 ---
 
 ## Testes
++ **`TODO`**
 
 ---
 
 ## Ferramentas Utilizadas
 
 - Linguagem: **Python 3.8**
-- Editor: **VS Code*
+- Editor: **VS Code**
 - Gerenciamento de versão: **Git**
-- Testes: 
 
 ---
 

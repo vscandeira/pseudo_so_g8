@@ -51,7 +51,7 @@ class SistemaOperacional:
             else:
                 # Alocar E/S, ainda não implementado
                 # assume um retorno booleano
-                if (self.recursos.alocar(self.executando)):
+                if (self.recursos.alocar(self.executando, True)):
                     exec_cpu = self.escalonador.tempo_autorizado(self.executando)
                     self.executando.executar_processo(exec_cpu, printar=True)
                     # 3.1. Devolve processo à fila de pronto se ainda tiver tempo de CPU restante
@@ -67,7 +67,7 @@ class SistemaOperacional:
                     # Liberar memória
                     self.memoria.liberar(self.executando)
                 # Liberar E/S, ainda não implementado
-                self.recursos.liberar(self.executando)
+                self.recursos.liberar(self.executando, True)
             self.tempo += exec_cpu
             if (not self.escalonador.fila_pronto[0]) and all(not sub for sub in self.escalonador.fila_pronto[1]):
                 fila_vazia = True
