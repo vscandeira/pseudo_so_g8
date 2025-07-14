@@ -31,7 +31,7 @@ class SistemaOperacional:
                         p.lista_id_operacoes.append(id)
                     # Alocar memória
                     # assume um retorno booleano
-                    if (self.memoria.alocar(p)):
+                    if (self.memoria.alocar(p, True)):
                         if(self.escalonador.adicionar_processo(p)):
                             self.msg_processo_criado(p)
                             fila_vazia = False
