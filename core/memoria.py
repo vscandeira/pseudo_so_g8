@@ -42,11 +42,15 @@ class GerenciadorMemoria:
     def alocar(self, processo: Processo) -> bool:
         """
         Aloca memória para um processo.
+        Se um processo de tempo real não encontrar espaço em sua região,
+        ele buscará na região de usuário.
         """
         endereco = -1
 
         if processo.prioridade == 0:
             endereco = self._encontrar_bloco_contiguo(self.BLOCO_INICIO_TR, self.BLOCO_FIM_TR, processo.blocos_mem)
+            if endereco == -1:
+                endereco = self._encontrar_bloco_contiguo(self.BLOCO_INICIO_USUARIO, self.BLOCO_FIM_USUARIO, processo.blocos_mem)
         else:
             endereco = self._encontrar_bloco_contiguo(
                 self.BLOCO_INICIO_USUARIO, self.BLOCO_FIM_USUARIO, processo.blocos_mem
