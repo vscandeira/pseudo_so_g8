@@ -53,4 +53,3 @@ class SistemaOperacional:
                 break
         # Debug tempo
         print("Tempo final:", self.tempo, "ms")
-        
