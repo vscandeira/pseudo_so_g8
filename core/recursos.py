@@ -1,5 +1,4 @@
-# 1 scanner, 2 impressoras, 1 modem, 2 discos SATA.
-# Implementa semáforos ou locks.
+from typing import Tuple, Dict
 from core.processos import Processo
 
 
@@ -10,7 +9,7 @@ class GerenciadorRecursos:
         self.modem = -1
         self.sata = [-1, -1]
 
-    def _alocar(self, recurso: str, processo: Processo) -> tuple[bool, str]:
+    def _alocar(self, recurso: str, processo: Processo) -> Tuple[bool, str]:
         """
         Tenta alocar um recurso específico.
         Retorna True e o nome do recurso alocado se bem-sucedido, False caso contrário.
@@ -62,7 +61,7 @@ class GerenciadorRecursos:
 
         return True
 
-    def _rollback_alocacao(self, processo_pid: int, recursos_alocados_temp: dict[str, str]) -> None:
+    def _rollback_alocacao(self, processo_pid: int, recursos_alocados_temp: Dict[str, str]) -> None:
         """
         Libera os recursos que foram alocados em uma tentativa falha de alocação.
         """
