@@ -24,12 +24,12 @@ class GerenciadorRecursos:
                 self.modem = processo.pid
                 return True, "modem"
         elif recurso == "impressora":
-            if self.impressoras[processo.impressora]:
-                self.impressoras[processo.impressora] = processo.pid
+            if self.impressoras[processo.impressora - 1]:
+                self.impressoras[processo.impressora - 1] = processo.pid
                 return True, f"impressora_{processo.impressora}"
         elif recurso == "sata":
-            if self.sata[processo.sata]:
-                self.sata[processo.sata] = processo.pid
+            if self.sata[processo.sata - 1]:
+                self.sata[processo.sata - 1] = processo.pid
                 return True, f"sata_{processo.sata}"
         return False, None
 
@@ -74,11 +74,11 @@ class GerenciadorRecursos:
                 if self.modem == processo_pid:
                     self.modem = -1
             elif recurso_tipo == "impressora":
-                idx = int(identificador.split("_")[1])
+                idx = int(identificador.split("_")[1]) - 1
                 if self.impressoras[idx] == processo_pid:
                     self.impressoras[idx] = -1
             elif recurso_tipo == "sata":
-                idx = int(identificador.split("_")[1])
+                idx = int(identificador.split("_")[1]) - 1
                 if self.sata[idx] == processo_pid:
                     self.sata[idx] = -1
 
@@ -89,12 +89,12 @@ class GerenciadorRecursos:
         if processo.scanner:
             if self.scanner == processo.pid:
                 self.scanner = -1
-        if processo.impressora is not None:
-            if self.impressoras[processo.impressora] == processo.pid:
-                self.impressoras[processo.impressora] = -1
+        if processo.impressora:
+            if self.impressoras[processo.impressora - 1] == processo.pid:
+                self.impressoras[processo.impressora - 1] = -1
         if processo.modem:
             if self.modem == processo.pid:
                 self.modem = -1
-        if processo.sata is not None:
-            if self.sata[processo.sata] == processo.pid:
-                self.sata[processo.sata] = -1
+        if processo.sata:
+            if self.sata[processo.sata - 1] == processo.pid:
+                self.sata[processo.sata - 1] = -1
