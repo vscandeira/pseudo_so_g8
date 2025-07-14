@@ -9,7 +9,7 @@ class GerenciadorRecursos:
         self.sata = [False, False]
 
     def alocar(self, processo):
-        pass
+        return True
 
     def liberar(self, processo):
         pass

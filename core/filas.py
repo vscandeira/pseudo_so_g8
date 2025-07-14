@@ -11,8 +11,11 @@ class Escalonador:
         self.fila_pronto = [self.fila_tempo_real, self.filas_usr]
         self.quantum = 1
         self.aging = 5 
+        self.max = 1000 # limite de processos da fila de prontos
 
     def adicionar_processo(self, processo):
+        if len(self.fila_tempo_real) + len(self.fila_usr_p1) + len(self.fila_usr_p2) + len(self.fila_usr_p3) >= self.max:
+            return False
         if processo.prioridade == 0:
             self.fila_tempo_real.append(processo)
         elif processo.prioridade == 1:
@@ -21,6 +24,7 @@ class Escalonador:
             self.fila_usr_p2.append(processo)
         elif processo.prioridade == 3:
             self.fila_usr_p3.append(processo)
+        return True
 
     def proximo_processo(self):
         if self.fila_tempo_real:
