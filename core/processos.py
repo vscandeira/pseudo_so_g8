@@ -3,8 +3,7 @@
 class Processo:
     def __init__(self, pid, chegada, prioridade, tempo_cpu, blocos_mem, impressora, scanner, modem, sata):
         self.pid = pid
-        # implementar lógica do offset após ver como memória está implementada
-        self.offset = 0
+        self.offset = None
         self.prioridade = prioridade
         self.tempo_cpu = tempo_cpu
         self.blocos_mem = blocos_mem

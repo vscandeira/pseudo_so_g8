@@ -8,7 +8,7 @@ class GerenciadorArquivos:
         self.operacoes = []
         self.livre = ' '  # Representa um bloco livre no disco
     
-    def iniciar_filesystem(self, operacoes_arquivos):
+    def iniciar_filesystem(self, operacoes_arquivos) -> None:
         self.num_blocos = operacoes_arquivos[0]
         for i in range(self.num_blocos):
             self.mapa_ocupacao.append(self.livre)
@@ -20,10 +20,11 @@ class GerenciadorArquivos:
             self.operacoes.append(OperacaoArquivo(op[0], op[1], op[2], i, op[3] if len(op) > 3 else None))
             i +=1
 
-    def identificadores_ops_de_processo(self, pid):
+    def identificadores_ops_de_processo(self, pid) -> int:
+        # retorna lista de identificação das operações para indexação no respectivo processo
         return [operacao.id_operacao for operacao in self.operacoes if operacao.pid == pid]
 
-    def aplicar_operacao(self, id_op):
+    def aplicar_operacao(self, id_op) -> None:
         for i in range(len(self.operacoes)):
             if (self.operacoes[i].id_operacao == id_op) and (not self.operacoes[i].executado):
                 self.operacoes[i].executado = True
@@ -34,7 +35,7 @@ class GerenciadorArquivos:
                 else:
                     print(f"Operação {self.operacoes[i].cod_operacao} desconhecida.")
 
-    def criar_arquivo(self, index):
+    def criar_arquivo(self, index) -> None:
         for i in range(self.num_blocos):
             if self.mapa_ocupacao[i] == self.livre:
                 num_livres = 1
@@ -58,7 +59,7 @@ class GerenciadorArquivos:
                 else: 
                     i = i + num_livres - 1  # Pula os blocos livres já contados
 
-    def deletar_arquivo(self, index):
+    def deletar_arquivo(self, index) -> None:
         for i in range(self.num_blocos):
             if(self.mapa_ocupacao[i] == self.operacoes[index].nome_arquivo):
                 j = i
@@ -69,13 +70,13 @@ class GerenciadorArquivos:
                 return
 
 
-    def print_mapa_ocupacao(self):
+    def print_mapa_ocupacao(self) -> None:
         print("Mapa de ocupação do disco:")
         for bloco in self.mapa_ocupacao:
             print(f"|{bloco}", end="")
         print("|")
     
-    def print_resultado_operacoes(self):
+    def print_resultado_operacoes(self) -> None:
         print("Sistema de arquivos =>\n")
         for operacao in self.operacoes:
             if operacao.executado and operacao.sucesso:
