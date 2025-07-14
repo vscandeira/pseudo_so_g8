@@ -80,7 +80,7 @@ class SistemaOperacional:
         # Imprime mapa de ocupação do disco
         self.arquivos.print_mapa_ocupacao()
     
-    def msg_processo_criado(self, processo):
+    def msg_processo_criado(self, processo) -> None:
         print("dispatcher =>")
         print(f"\tPID: {processo.pid}")
         print(f"\ttime arrived: {processo.chegada} ms")

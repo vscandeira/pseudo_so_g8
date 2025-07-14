@@ -8,8 +8,8 @@ class GerenciadorRecursos:
         self.modem = False
         self.sata = [False, False]
 
-    def alocar(self, processo):
+    def alocar(self, processo) -> bool:
         return True
 
-    def liberar(self, processo):
+    def liberar(self, processo) -> None:
         pass

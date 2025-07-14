@@ -53,7 +53,7 @@ class GerenciadorMemoria:
             for i in range(endereco, endereco + processo.blocos_mem):
                 self.memoria[i] = processo.pid
 
-            processo.inicio = endereco
+            processo.offset = endereco
             return True
         else:
             return False
@@ -62,9 +62,9 @@ class GerenciadorMemoria:
         """
         Libera memória alocada para um processo.
         """
-        if processo.inicio is not None:
-            for i in range(processo.inicio, processo.inicio + processo.blocos_mem):
+        if processo.offset is not None:
+            for i in range(processo.offset, processo.offset + processo.blocos_mem):
                 if 0 <= i < len(self.memoria):
                     self.memoria[i] = 0
 
-            processo.inicio = None
+            processo.offset = None
