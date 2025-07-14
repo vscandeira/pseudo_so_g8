@@ -39,7 +39,7 @@ class GerenciadorMemoria:
                 bloco_candidato = -1
         return -1
 
-    def alocar(self, processo: Processo) -> bool:
+    def alocar(self, processo: Processo, printar = False) -> bool:
         """
         Aloca memória para um processo.
         Se um processo de tempo real não encontrar espaço em sua região,
@@ -61,8 +61,12 @@ class GerenciadorMemoria:
                 self.memoria[i] = processo.pid
 
             processo.offset = endereco
+            if printar:
+                self.print_mapa_ocupacao()
             return True
         else:
+            if printar:
+                self.print_mapa_ocupacao()
             return False
 
     def liberar(self, processo: Processo) -> None:
@@ -75,3 +79,24 @@ class GerenciadorMemoria:
                     self.memoria[i] = -1
 
             processo.offset = None
+    
+    def print_mapa_ocupacao(self) -> None:
+        """
+        Imprime o mapa de ocupação da memória.
+        """
+        print("Ocupação da memória =>")
+        i = 0
+        while (i <= self.BLOCO_FIM_USUARIO):
+            proc = self.memoria[i]
+            j = i+1
+            while (j <= self.BLOCO_FIM_USUARIO):
+                if self.memoria[j] != proc:
+                    break
+                else:
+                    j += 1
+            if proc == -1:
+                print(f"\tBlocos {i}-{j-1}: Livre")
+            else:
+                print(f"\tBlocos {i}-{j-1}: Processo {proc}")
+            i = j
+        print()

@@ -29,8 +29,10 @@ class Processo:
             print(f"P{self.pid} STARTED")
         else:
             print(f"P{self.pid} RESUMED")
-        for i in range(self.instrucoes_executadas, autorizacao_cpu):
-            print(f"P{self.pid} instruction {i+1}")
+        i = self.instrucoes_executadas
+        while i < self.instrucoes_executadas + autorizacao_cpu:
+            i += 1
+            print(f"P{self.pid} instruction {i}")
         if (self.tempo_cpu-autorizacao_cpu) <= 0:
             print(f"P{self.pid} return SIGINT")
         print()
