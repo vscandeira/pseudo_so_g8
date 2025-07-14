@@ -21,6 +21,9 @@ class GerenciadorMemoria:
         self.BLOCO_FIM_USUARIO = 1023
 
     def _encontrar_bloco_contiguo(self, inicio_busca: int, fim_busca: int, tamanho_necessario: int) -> int:
+        """
+        Busca um endereço livre para alocação
+        """
         bloco_livre_atual = 0
         bloco_candidato = -1
 
@@ -51,7 +54,7 @@ class GerenciadorMemoria:
 
         if endereco != -1:
             for i in range(endereco, endereco + processo.blocos_mem):
-                self.memoria[i] = processo.pid
+                self.memoria[i] = 1
 
             processo.offset = endereco
             return True
