@@ -29,7 +29,7 @@ def parse_arquivos(caminho):
 
     operacoes = []
     for linha in linhas[2 + qtd_ocupados:]:
-        partes = linha.split(',')
+        partes = linha.split(', ')
         id_proc = int(partes[0])
         op = int(partes[1])
         nome = partes[2]

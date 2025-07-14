@@ -19,10 +19,6 @@ if __name__ == "__main__":
     procs = parse_processos(procs_filename)
     ops_arqs = parse_arquivos(ops_arqs_filename)
 
-    # Verificação inicial, será retirado em release final
-    print("Operações de Arquivos:", ops_arqs)
-    print()
-
     # Instancia o despachante
     so = SistemaOperacional(procs, ops_arqs)
     so.executar()
