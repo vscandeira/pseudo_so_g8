@@ -83,14 +83,18 @@ class GerenciadorArquivos:
                 print(f"Operação {operacao.id_operacao} => Sucesso")
                 if operacao.cod_operacao == 0:  # Criação de arquivo
                     print(f"O processo {operacao.pid} criou o arquivo {operacao.nome_arquivo} (blocos {[ind for ind, b in enumerate(self.mapa_ocupacao) if b == operacao.nome_arquivo]}).")
-                else:  # Deleção de arquivo
+                elif operacao.cod_operacao == 1:  # Deleção de arquivo
                     print(f"O processo {operacao.pid} deletou o arquivo {operacao.nome_arquivo}.")
+                else:
+                    print(f"O processo {operacao.pid} solicitou uma operação não reconhecida para o arquivo {operacao.nome_arquivo}.")
             elif operacao.executado:
                 print(f"Operação {operacao.id_operacao} => Falha")
                 if operacao.cod_operacao == 0:  # Criação de arquivo
                     print(f"O processo {operacao.pid} não pode criar o arquivo {operacao.nome_arquivo} (falta de espaço).")
-                else:  # Deleção de arquivo
+                elif operacao.cod_operacao == 1:  # Deleção de arquivo
                     print(f"O processo {operacao.pid} não pode deletar o arquivo {operacao.nome_arquivo}, porque ele não existe.")
+                else:
+                    print(f"O processo {operacao.pid} solicitou uma operação não reconhecida para o arquivo {operacao.nome_arquivo}.")
             else:
                 print(f"Operação {operacao.id_operacao} => Falha")
                 print(f"O processo {operacao.pid} não existe.")
