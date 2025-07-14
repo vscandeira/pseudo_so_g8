@@ -12,7 +12,7 @@ class GerenciadorMemoria:
     """
 
     def __init__(self):
-        self.memoria = [0] * 1024
+        self.memoria = [-1] * 1024
 
         self.BLOCO_INICIO_TR = 0
         self.BLOCO_FIM_TR = 63
@@ -28,7 +28,7 @@ class GerenciadorMemoria:
         bloco_candidato = -1
 
         for i in range(inicio_busca, fim_busca + 1):
-            if self.memoria[i] == 0:
+            if self.memoria[i] == -1:
                 if bloco_livre_atual == 0:
                     bloco_candidato = i
                 bloco_livre_atual += 1
@@ -58,7 +58,7 @@ class GerenciadorMemoria:
 
         if endereco != -1:
             for i in range(endereco, endereco + processo.blocos_mem):
-                self.memoria[i] = 1
+                self.memoria[i] = processo.pid
 
             processo.offset = endereco
             return True
@@ -72,6 +72,6 @@ class GerenciadorMemoria:
         if processo.offset is not None:
             for i in range(processo.offset, processo.offset + processo.blocos_mem):
                 if 0 <= i < len(self.memoria):
-                    self.memoria[i] = 0
+                    self.memoria[i] = -1
 
             processo.offset = None
