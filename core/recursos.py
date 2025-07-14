@@ -32,7 +32,7 @@ class GerenciadorRecursos:
                 return True, f"sata_{processo.sata}"
         return False, None
 
-    def alocar(self, processo: Processo) -> bool:
+    def alocar(self, processo: Processo, printar = False) -> bool:
         """
         Aloca os recursos de um processo
         """
@@ -47,6 +47,8 @@ class GerenciadorRecursos:
             recursos_solicitados.append("sata")
 
         if not recursos_solicitados:
+            if printar:
+                self.print_aloc_recursos()
             return True
 
         alocacoes = {}
@@ -57,8 +59,12 @@ class GerenciadorRecursos:
                 alocacoes[recurso] = identificador
             else:
                 self._rollback_alocacao(processo.pid, alocacoes)
+                if printar:
+                    self.print_aloc_recursos()
                 return False
 
+        if printar:
+            self.print_aloc_recursos()
         return True
 
     def _rollback_alocacao(self, processo_pid: int, recursos_alocados_temp: Dict[str, str]) -> None:
@@ -81,7 +87,7 @@ class GerenciadorRecursos:
                 if self.sata[idx] == processo_pid:
                     self.sata[idx] = -1
 
-    def liberar(self, processo: Processo) -> None:
+    def liberar(self, processo: Processo, printar = False) -> None:
         """
         Libera os recursos de E/S previamente alocados por um processo.
         """
@@ -97,3 +103,17 @@ class GerenciadorRecursos:
         if processo.sata:
             if self.sata[processo.sata - 1] == processo.pid:
                 self.sata[processo.sata - 1] = -1
+        if printar:
+            self.print_aloc_recursos()
+
+    
+    def print_aloc_recursos(self) -> None:
+        """
+        Imprime o estado atual dos recursos alocados.
+        """
+        print("Gerenciador de recursos =>")
+        print(f"\tScanner: {'Ocupado' if self.scanner != -1 else 'Livre'}")
+        print(f"\tImpressoras: {[f'Ocupada por {pid}' if pid != -1 else 'Livre' for pid in self.impressoras]}")
+        print(f"\tModem: {'Ocupado' if self.modem != -1 else 'Livre'}")
+        print(f"\tSATA: {[f'Ocupada por {pid}' if pid != -1 else 'Livre' for pid in self.sata]}")
+        print()
