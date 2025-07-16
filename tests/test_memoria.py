@@ -24,16 +24,14 @@ def test_alocar_tempo_real_com_sucesso(gerenciador):
     assert 0 <= p.offset <= gerenciador.BLOCO_FIM_TR
 
 
-def test_alocar_tempo_real_sem_espaco_no_tr_mas_com_espaco_usuario(gerenciador):
+def test_alocar_tempo_real_sem_espaco_no_tr(gerenciador):
     # preenche região TR toda
     for i in range(gerenciador.BLOCO_INICIO_TR, gerenciador.BLOCO_FIM_TR + 1):
         gerenciador.memoria[i] = 99  # processo fictício
 
     p = Processo(pid=2, prioridade=0, blocos_mem=10)
     sucesso = gerenciador.alocar(p)
-    assert sucesso
-    # deve estar na região usuário, pois TR está cheia
-    assert gerenciador.BLOCO_INICIO_USUARIO <= p.offset <= gerenciador.BLOCO_FIM_USUARIO
+    assert not sucesso
 
 
 def test_alocar_usuario(gerenciador):
