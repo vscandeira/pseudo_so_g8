@@ -1,0 +1,19 @@
+10
+3
+X, 0, 2
+Y, 3, 1
+Z, 5, 3
+0, 1, X -> ok (1)
+1, 1, Y -> ok (2)
+0, 1, Z -> ok (3)
+2, 1, Z -> erro n existe (4)
+2, 1, A -> erro n permitido (5) 
+0, 0, A, 3 -> ok criado (6)
+0, 0, B, 3 -> ok criado (7)
+2, 1, B -> erro n permitido (8) 
+5, 0, D, 1 -> proc n existe (9)
+4, 0, D, 20 -> erro tamanho maior que disco (falta de espaço) (10)
+4, 0, D, 2 -> ok (11)
+4, 0, E, 2 -> ok (12) 
+4, 1, D -> ok (13)
+3, 1, E -> erro n permitido (14)

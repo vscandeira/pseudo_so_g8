@@ -80,9 +80,9 @@ pseudo_so/
 
 3. Execute o programa. 
    + O primeiro parâmetro é o arquivo de processos e o segundo o arquivo contendo operações sobre arquivos.
-   + Exemplo com escolha dos arquivos **process02.txt** e **files01.txt**:
+   + Exemplo com escolha dos arquivos **process03.txt** e **files03.txt**:
       ```bash
-      python3 main.py validation_files/process02.txt validation_files/files01.txt
+      python3 main.py validation_files/process03.txt validation_files/files03.txt
       ```
 
 4. A saída será impressa no terminal, com logs de criação, execução e finalização dos processos, além das operações no sistema de arquivos, estados de memória e do gerenciador de recursos.

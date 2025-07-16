@@ -14,6 +14,8 @@ class SistemaOperacional:
         self.operacoes_arquivos = operacoes_arquivos
         self.executando = None
         self.tempo = 0
+        self.proc_criados = 0
+        self.proc_executados = 0
 
     def executar(self):
         ha_novos_processos = True
@@ -37,6 +39,7 @@ class SistemaOperacional:
                             if self.escalonador.adicionar_processo(p):
                                 self.msg_processo_criado(p)
                                 fila_vazia = False
+                                self.proc_criados += 1
                             # Recoloca o processo em espera por limite da fila de prontos
                             else:
                                 self.processos.append(p)
@@ -69,9 +72,10 @@ class SistemaOperacional:
                     # Como não há tempo determinado, operações de arquivos são aplicadas na última execução do processo
                     else:
                         for id_op in self.executando.lista_id_operacoes:
-                            self.arquivos.aplicar_operacao(id_op)
+                            self.arquivos.aplicar_operacao(id_op, self.executando.prioridade)
                         # Liberar memória
                         self.memoria.liberar(self.executando)
+                        self.proc_executados += 1
                     # Liberar E/S, ainda não implementado
                     self.recursos.liberar(self.executando, True)
                 except UnknownResourceError as e:
@@ -90,6 +94,8 @@ class SistemaOperacional:
         self.arquivos.print_resultado_operacoes()
         # Imprime mapa de ocupação do disco
         self.arquivos.print_mapa_ocupacao()
+        print(f"Total de processos criados: {self.proc_criados}")
+        print(f"Total de processos executados: {self.proc_executados}")
 
     def msg_processo_criado(self, processo) -> None:
         print("dispatcher =>")
