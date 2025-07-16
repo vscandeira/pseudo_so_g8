@@ -57,12 +57,6 @@ class GerenciadorMemoria:
             if processo.blocos_mem > (self.BLOCO_FIM_TR - self.BLOCO_INICIO_TR + 1):
                 raise MemoryOverflowError("Processo de tempo real não tem blocos suficientes para alocação.")
             endereco = self._encontrar_bloco_contiguo(self.BLOCO_INICIO_TR, self.BLOCO_FIM_TR, processo.blocos_mem)
-            if endereco == -1:
-                endereco = self._encontrar_bloco_contiguo(
-                    self.BLOCO_INICIO_USUARIO,
-                    self.BLOCO_FIM_USUARIO,
-                    processo.blocos_mem,
-                )
         else:
             if processo.blocos_mem > (self.BLOCO_FIM_USUARIO - self.BLOCO_INICIO_USUARIO + 1):
                 raise MemoryOverflowError("Processo de usuário não tem blocos suficientes para alocação.")
