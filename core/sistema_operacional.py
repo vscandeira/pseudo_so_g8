@@ -1,7 +1,8 @@
 from core.filas import Escalonador
-from core.memoria import GerenciadorMemoria
+from core.memoria import GerenciadorMemoria, MemoryOverflowError
 from core.recursos import GerenciadorRecursos, UnknownResourceError
 from core.arquivos import GerenciadorArquivos
+
 
 class SistemaOperacional:
     def __init__(self, processos, operacoes_arquivos):
@@ -19,7 +20,7 @@ class SistemaOperacional:
         fila_vazia = True
         self.arquivos.iniciar_filesystem(self.operacoes_arquivos)
         # Loop de execução do despachante
-        while(True):
+        while True:
             # 0. Debug tempo
             print(f"##########Tempo: {self.tempo} ms")
             # 1. Inserir processos nas filas do tempo t
@@ -31,16 +32,20 @@ class SistemaOperacional:
                         p.lista_id_operacoes.append(id)
                     # Alocar memória
                     # assume um retorno booleano
-                    if (self.memoria.alocar(p, True)):
-                        if(self.escalonador.adicionar_processo(p)):
-                            self.msg_processo_criado(p)
-                            fila_vazia = False
-                        # Recoloca o processo em espera por limite da fila de prontos
+                    try:
+                        if self.memoria.alocar(p, True):
+                            if self.escalonador.adicionar_processo(p):
+                                self.msg_processo_criado(p)
+                                fila_vazia = False
+                            # Recoloca o processo em espera por limite da fila de prontos
+                            else:
+                                self.processos.append(p)
+                        # Recoloca o processo em espera por limite de memória
                         else:
                             self.processos.append(p)
-                    # Recoloca o processo em espera por limite de memória
-                    else:
-                        self.processos.append(p)
+                    except MemoryOverflowError as e:
+                        print(f"Erro: {e} - Encerrando processo {p.pid}.")
+
             if not self.processos:
                 ha_novos_processos = False
             # 2. Escolhe o próximo processo da fila de pronto
@@ -52,7 +57,7 @@ class SistemaOperacional:
                 # Alocar E/S, ainda não implementado
                 # assume um retorno booleano
                 try:
-                    if (self.recursos.alocar(self.executando, True)):
+                    if self.recursos.alocar(self.executando, True):
                         exec_cpu = self.escalonador.tempo_autorizado(self.executando)
                         self.executando.executar_processo(exec_cpu, printar=True)
                     # 3.1. Devolve processo à fila de pronto se ainda tiver tempo de CPU restante
@@ -85,7 +90,7 @@ class SistemaOperacional:
         self.arquivos.print_resultado_operacoes()
         # Imprime mapa de ocupação do disco
         self.arquivos.print_mapa_ocupacao()
-    
+
     def msg_processo_criado(self, processo) -> None:
         print("dispatcher =>")
         print(f"\tPID: {processo.pid}")
