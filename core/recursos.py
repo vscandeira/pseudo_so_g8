@@ -1,6 +1,10 @@
 from typing import Tuple, Dict
 from core.processos import Processo
 
+class UnknownResourceError(Exception):
+    """Exceção para códigos de recurso inválidos."""
+    pass
+
 
 class GerenciadorRecursos:
     def __init__(self):
@@ -23,10 +27,14 @@ class GerenciadorRecursos:
                 self.modem = processo.pid
                 return True, "modem"
         elif recurso == "impressora":
+            if processo.impressora not in (1, 2):
+                raise UnknownResourceError(f"Código de impressora ({processo.impressora}) inválido.")
             if self.impressoras[processo.impressora - 1]:
                 self.impressoras[processo.impressora - 1] = processo.pid
                 return True, f"impressora_{processo.impressora}"
         elif recurso == "sata":
+            if processo.sata not in (1, 2):
+                raise UnknownResourceError(f"Código de dispositivo SATA ({processo.sata}) inválido.")
             if self.sata[processo.sata - 1]:
                 self.sata[processo.sata - 1] = processo.pid
                 return True, f"sata_{processo.sata}"
@@ -95,13 +103,13 @@ class GerenciadorRecursos:
             if self.scanner == processo.pid:
                 self.scanner = -1
         if processo.impressora:
-            if self.impressoras[processo.impressora - 1] == processo.pid:
+            if processo.impressora in (1, 2) and self.impressoras[processo.impressora - 1] == processo.pid:
                 self.impressoras[processo.impressora - 1] = -1
         if processo.modem:
             if self.modem == processo.pid:
                 self.modem = -1
         if processo.sata:
-            if self.sata[processo.sata - 1] == processo.pid:
+            if processo.sata in (1, 2) and self.sata[processo.sata - 1] == processo.pid:
                 self.sata[processo.sata - 1] = -1
         if printar:
             self.print_aloc_recursos()
