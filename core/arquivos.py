@@ -76,7 +76,7 @@ class GerenciadorArquivos:
     def print_mapa_ocupacao(self) -> None:
         print("Mapa de ocupação do disco:")
         for bloco in self.mapa_ocupacao:
-            print(f"|{bloco}", end="")
+            print(f"|{bloco[0]}", end="")
         print("|")
     
     def print_resultado_operacoes(self) -> None:
