@@ -90,9 +90,31 @@ pseudo_so/
 ---
 
 ## Testes
-+ **`TODO`**
 
----
+Este projeto conta com uma suíte de testes automatizados desenvolvidos com `pytest`, localizada na pasta `tests/`.
+
+
+Os testes estão divididos por módulos:
+
+- `test_processos.py`: valida o comportamento da classe `Processo`, como execução e controle de tempo de CPU.
+- `test_memoria.py`: verifica a alocação e liberação de blocos de memória para processos.
+- `test_recursos.py`: testa a alocação e liberação de recursos de E/S (impressoras, modem, scanner e SATA).
+- `test_arquivos.py`: garante o funcionamento correto do sistema de arquivos simulado, incluindo criação e exclusão de arquivos.
+- `test_parser.py`: confere a leitura, validação e transformação dos arquivos de entrada.
+- `test_integrado.py`: executa uma simulação completa do sistema operacional com entrada real, validando o funcionamento integrado dos módulos.
+
+### Como rodar os testes
+
+1. No terminal, dentro do diretório do projeto:
+
+```bash
+pytest
+```
+É necessário ter o pytest instalado. Para instalar:
+
+```bash
+pip install pytest
+```
 
 ## Ferramentas Utilizadas
 
