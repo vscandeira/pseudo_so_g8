@@ -5,6 +5,12 @@
 from core.processos import Processo
 
 
+class MemoryOverflowError(Exception):
+    """Exceção para estouro de memória."""
+
+    pass
+
+
 class GerenciadorMemoria:
     """
     Gerencia a alocação e liberação de memória para processos no pseudo-SO.
@@ -39,7 +45,7 @@ class GerenciadorMemoria:
                 bloco_candidato = -1
         return -1
 
-    def alocar(self, processo: Processo, printar = False) -> bool:
+    def alocar(self, processo: Processo, printar=False) -> bool:
         """
         Aloca memória para um processo.
         Se um processo de tempo real não encontrar espaço em sua região,
@@ -48,10 +54,12 @@ class GerenciadorMemoria:
         endereco = -1
 
         if processo.prioridade == 0:
+            if processo.blocos_mem > (self.BLOCO_FIM_TR - self.BLOCO_INICIO_TR + 1):
+                raise MemoryOverflowError("Processo de tempo real não tem blocos suficientes para alocação.")
             endereco = self._encontrar_bloco_contiguo(self.BLOCO_INICIO_TR, self.BLOCO_FIM_TR, processo.blocos_mem)
-            if endereco == -1:
-                endereco = self._encontrar_bloco_contiguo(self.BLOCO_INICIO_USUARIO, self.BLOCO_FIM_USUARIO, processo.blocos_mem)
         else:
+            if processo.blocos_mem > (self.BLOCO_FIM_USUARIO - self.BLOCO_INICIO_USUARIO + 1):
+                raise MemoryOverflowError("Processo de usuário não tem blocos suficientes para alocação.")
             endereco = self._encontrar_bloco_contiguo(
                 self.BLOCO_INICIO_USUARIO, self.BLOCO_FIM_USUARIO, processo.blocos_mem
             )
@@ -79,24 +87,24 @@ class GerenciadorMemoria:
                     self.memoria[i] = -1
 
             processo.offset = None
-    
+
     def print_mapa_ocupacao(self) -> None:
         """
         Imprime o mapa de ocupação da memória.
         """
         print("Ocupação da memória =>")
         i = 0
-        while (i <= self.BLOCO_FIM_USUARIO):
+        while i <= self.BLOCO_FIM_USUARIO:
             proc = self.memoria[i]
-            j = i+1
-            while (j <= self.BLOCO_FIM_USUARIO):
+            j = i + 1
+            while j <= self.BLOCO_FIM_USUARIO:
                 if self.memoria[j] != proc:
                     break
                 else:
                     j += 1
             if proc == -1:
-                print(f"\tBlocos {i}-{j-1}: Livre")
+                print(f"\tBlocos {i}-{j - 1}: Livre")
             else:
-                print(f"\tBlocos {i}-{j-1}: Processo {proc}")
+                print(f"\tBlocos {i}-{j - 1}: Processo {proc}")
             i = j
         print()
