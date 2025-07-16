@@ -57,7 +57,7 @@ class SistemaOperacional:
             if self.executando is None:
                 exec_cpu = 1
             else:
-                # Alocar E/S, ainda não implementado
+                # Alocar E/S
                 # assume um retorno booleano
                 try:
                     if self.recursos.alocar(self.executando, True):
@@ -94,6 +94,7 @@ class SistemaOperacional:
         self.arquivos.print_resultado_operacoes()
         # Imprime mapa de ocupação do disco
         self.arquivos.print_mapa_ocupacao()
+        # Imprime quantitativo total de processos criados (incluídos na fila de prontos) e executados
         print(f"Total de processos criados: {self.proc_criados}")
         print(f"Total de processos executados: {self.proc_executados}")
 
