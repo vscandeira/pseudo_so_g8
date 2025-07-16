@@ -1,6 +1,6 @@
 from core.filas import Escalonador
 from core.memoria import GerenciadorMemoria
-from core.recursos import GerenciadorRecursos
+from core.recursos import GerenciadorRecursos, UnknownResourceError
 from core.arquivos import GerenciadorArquivos
 
 class SistemaOperacional:
@@ -51,23 +51,29 @@ class SistemaOperacional:
             else:
                 # Alocar E/S, ainda não implementado
                 # assume um retorno booleano
-                if (self.recursos.alocar(self.executando, True)):
-                    exec_cpu = self.escalonador.tempo_autorizado(self.executando)
-                    self.executando.executar_processo(exec_cpu, printar=True)
+                try:
+                    if (self.recursos.alocar(self.executando, True)):
+                        exec_cpu = self.escalonador.tempo_autorizado(self.executando)
+                        self.executando.executar_processo(exec_cpu, printar=True)
                     # 3.1. Devolve processo à fila de pronto se ainda tiver tempo de CPU restante
-                if self.executando.tempo_cpu > 0:
-                    self.executando = self.escalonador.aplicar_aging(self.executando)
-                    self.escalonador.adicionar_processo(self.executando)
-                    fila_vazia = False
-                # 3.2. Aplicar operações em arquivos
-                # Como não há tempo determinado, operações de arquivos são aplicadas na última execução do processo
-                else:
-                    for id_op in self.executando.lista_id_operacoes:
-                        self.arquivos.aplicar_operacao(id_op)
-                    # Liberar memória
+                    if self.executando.tempo_cpu > 0:
+                        self.executando = self.escalonador.aplicar_aging(self.executando)
+                        self.escalonador.adicionar_processo(self.executando)
+                        fila_vazia = False
+                    # 3.2. Aplicar operações em arquivos
+                    # Como não há tempo determinado, operações de arquivos são aplicadas na última execução do processo
+                    else:
+                        for id_op in self.executando.lista_id_operacoes:
+                            self.arquivos.aplicar_operacao(id_op)
+                        # Liberar memória
+                        self.memoria.liberar(self.executando)
+                    # Liberar E/S, ainda não implementado
+                    self.recursos.liberar(self.executando, True)
+                except UnknownResourceError as e:
+                    print(f"Erro: {e} - Encerrando processo {self.executando.pid}.")
                     self.memoria.liberar(self.executando)
-                # Liberar E/S, ainda não implementado
-                self.recursos.liberar(self.executando, True)
+                    self.recursos.liberar(self.executando, True)
+                    exec_cpu = 1
             self.tempo += exec_cpu
             if (not self.escalonador.fila_pronto[0]) and all(not sub for sub in self.escalonador.fila_pronto[1]):
                 fila_vazia = True
